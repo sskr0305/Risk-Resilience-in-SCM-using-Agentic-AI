@@ -60,7 +60,7 @@ The notebook is organized into nine main steps:
 
 6. **Evaluate Models**  
    - Computes accuracy, classification reports, and confusion matrices.
-   - In the reported run, **Logistic Regression** achieves about **92% accuracy**, outperforming Random Forest (~79%) and Gradient Boosting (~80%).[file:1]  
+   - In the reported run, **Logistic Regression** achieves about **92% accuracy**, outperforming Random Forest (~79%) and Gradient Boosting (~80%).  
    - Saves confusion matrix plots in `modelevaluation.png`.
 
 7. **Feature Importance Analysis**  

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply Chain Risk AI — Project Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1f2937;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --text: #e6edf3;
+    --muted: #8b949e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 40px;
+    background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #0d1117 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(88,166,255,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.15);
+    border: 1px solid rgba(88,166,255,0.4);
+    color: var(--accent);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #e6edf3, #58a6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle { color: var(--muted); font-size: 15px; }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .step-card:hover { border-color: var(--accent); }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .step-num {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--accent), #a371f7);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .step-title { font-size: 18px; font-weight: 700; }
+  .step-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .step-desc { color: #b1bac4; font-size: 14px; margin-bottom: 14px; }
+
+  .analogy {
+    background: rgba(63, 185, 80, 0.08);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #8ddb8d;
+    margin-bottom: 14px;
+  }
+
+  .code-block {
+    background: #0a0e13;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin-top: 10px;
+  }
+
+  .kw  { color: #ff7b72; }   /* keywords */
+  .fn  { color: #d2a8ff; }   /* functions */
+  .str { color: #a5d6ff; }   /* strings */
+  .cm  { color: #8b949e; }   /* comments */
+  .num { color: #79c0ff; }   /* numbers */
+  .cls { color: #ffa657; }   /* class names */
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  .tag {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-ml   { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+  .tag-data { background: rgba(88,166,255,0.12);  color: var(--accent);  border: 1px solid rgba(88,166,255,0.3); }
+  .tag-ai   { background: rgba(245,160,65,0.12);  color: #ffa657;        border: 1px solid rgba(245,160,65,0.3); }
+  .tag-viz  { background: rgba(63,185,80,0.12);   color: var(--green);   border: 1px solid rgba(63,185,80,0.3); }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 30px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pipeline-step {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 110px;
+  }
+
+  .pipeline-arrow {
+    color: var(--accent);
+    font-size: 20px;
+    padding: 0 6px;
+  }
+
+  .agent-box {
+    background: linear-gradient(135deg, rgba(88,166,255,0.08), rgba(188,140,255,0.08));
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+
+  .agent-cycle {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .cycle-item {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .cycle-icon { font-size: 28px; margin-bottom: 6px; }
+  .cycle-label { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .cycle-desc { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .install-box {
+    background: #0a0e13;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+
+  .install-box .prompt { color: var(--green); }
+  .install-box .cmd    { color: var(--text); }
+
+  .output-files {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .output-file {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .output-file .fname { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 12px; }
+  .output-file .fdesc { color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 40px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 50px;
+    color: var(--muted);
+    font-size: 13px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">IM41081 — Industrial Management</div>
+    <h1>Risk Resilience in Supply Chain<br>Using Agentic AI</h1>
+    <p class="subtitle">Complete Python Project Guide — Step-by-Step Explanation</p>
+  </header>
+
+  <!-- Pipeline Overview -->
+  <h2>🔁 Full Project Pipeline</h2>
+  <div class="pipeline">
+    <div class="pipeline-step">📦<br>Generate Data</div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">🔍<br>EDA</div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">✂️<br>Split Data</div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">🧠<br>Train Models</div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">📊<br>Evaluate</div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">🤖<br>AI Agent</div>
+  </div>
+
+  <!-- Installation -->
+  <h2>⚙️ Installation</h2>
+  <div class="step-card">
+    <div class="step-desc">Install these Python libraries before running the code:</div>
+    <div class="install-box">
+      <span class="prompt">$ </span><span class="cmd">pip install numpy pandas matplotlib seaborn scikit-learn joblib</span>
+    </div>
+    <div class="install-box">
+      <span class="prompt">$ </span><span class="cmd">python supply_chain_risk_ai.py</span>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Import Libraries</div>
+        <div class="step-subtitle">Setting up all tools we need</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Think of it like gathering all your tools before starting a construction project — hammer, drill, tape measure. Here, our "tools" are software libraries.</div>
+    <div class="step-desc">We import: <strong>numpy/pandas</strong> for data math, <strong>sklearn</strong> for ML algorithms, <strong>matplotlib/seaborn</strong> for charts, <strong>joblib</strong> to save our trained model.</div>
+    <div class="code-block">
+<span class="kw">import</span> numpy <span class="kw">as</span> np          <span class="cm"># Math operations on arrays</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> pd         <span class="cm"># Spreadsheet-like data tables</span>
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt  <span class="cm"># Plotting charts</span>
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">import</span> joblib                  <span class="cm"># Save/load models to disk</span>
+    </div>
+    <div class="tags">
+      <span class="tag tag-data">Data</span>
+      <span class="tag tag-viz">Visualization</span>
+      <span class="tag tag-ml">Machine Learning</span>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Generate Synthetic Dataset</div>
+        <div class="step-subtitle">Creating realistic supply chain data</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Since we don't have real company data, we simulate it — like using a flight simulator to practice before real flying.</div>
+    <div class="step-desc">We generate 2,000 supply chain records with 10 features (supplier reliability, delivery delays, inventory, etc.) and assign risk labels using a domain-knowledge scoring formula.</div>
+    <div class="code-block">
+<span class="cm"># Each row = one supply chain "snapshot"</span>
+data = {
+    <span class="str">'supplier_reliability'</span>: np.random.beta(<span class="num">5</span>, <span class="num">2</span>, n),   <span class="cm"># 0–1 score</span>
+    <span class="str">'delivery_delay_days'</span>: np.random.exponential(<span class="num">3</span>, n), <span class="cm"># Days late</span>
+    <span class="str">'inventory_level'</span>:     np.random.normal(<span class="num">0.6</span>, <span class="num">0.2</span>, n),<span class="cm"># Stock %</span>
+    <span class="str">'geopolitical_risk'</span>:   np.random.beta(<span class="num">2</span>, <span class="num">5</span>, n),    <span class="cm"># Country risk</span>
+    ...
+}
+<span class="cm"># Risk label: Low=0, Medium=1, High=2</span>
+risk_score = (<span class="num">1</span> - supplier_reliability) * <span class="num">2.5</span> + delay * <span class="num">0.3</span> + ...
+    </div>
+    <div class="tags">
+      <span class="tag tag-data">Data Generation</span>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Exploratory Data Analysis (EDA)</div>
+        <div class="step-subtitle">Understanding your data before modelling</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Before treating a patient, a doctor reviews all test reports. EDA is that "checkup" for your data — look for patterns, outliers, and imbalances.</div>
+    <div class="step-desc">We plot: (1) risk level distribution, (2) feature correlations, (3) supplier reliability histograms by risk group, (4) delay vs inventory scatter plot.</div>
+    <div class="code-block">
+<span class="cm"># Correlation heatmap</span>
+sns.heatmap(df.corr(), cmap=<span class="str">'RdYlGn_r'</span>, annot=<span class="kw">False</span>)
+
+<span class="cm"># Distribution by risk group</span>
+<span class="kw">for</span> level <span class="kw">in</span> [<span class="num">0</span>, <span class="num">1</span>, <span class="num">2</span>]:
+    ax.hist(df[df[<span class="str">'risk_level'</span>]==level][<span class="str">'supplier_reliability'</span>])
+    </div>
+    <div class="tags">
+      <span class="tag tag-viz">Visualization</span>
+      <span class="tag tag-data">Analysis</span>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Split Data — Train & Test</div>
+        <div class="step-subtitle">80% training, 20% testing</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Like a student studying chapters 1–8 (train) and then being tested on questions from chapter 9–10 (test) — questions they've never seen before.</div>
+    <div class="code-block">
+X = df[[<span class="str">'supplier_reliability'</span>, <span class="str">'delivery_delay_days'</span>, ...]]  <span class="cm"># Features</span>
+y = df[<span class="str">'risk_level'</span>]                                          <span class="cm"># Labels</span>
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>, stratify=y
+)
+<span class="cm"># stratify=y → ensures equal % of Low/Med/High in both sets</span>
+    </div>
+    <div class="tags">
+      <span class="tag tag-ml">ML Preprocessing</span>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Train 3 AI Models</div>
+        <div class="step-subtitle">Random Forest · Gradient Boosting · Logistic Regression</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Like asking three different doctors for a diagnosis and comparing their answers — the one with the best track record wins.</div>
+    <div class="step-desc"><strong>Random Forest</strong>: Builds many decision trees and takes a majority vote. <strong>Gradient Boosting</strong>: Builds trees sequentially, each correcting the last. <strong>Logistic Regression</strong>: Simple statistical baseline.</div>
+    <div class="code-block">
+<span class="cm"># Each model is a Pipeline (Scaler + Classifier)</span>
+Pipeline([
+    (<span class="str">'scaler'</span>, StandardScaler()),          <span class="cm"># Normalize features to same scale</span>
+    (<span class="str">'clf'</span>, RandomForestClassifier(
+        n_estimators=<span class="num">150</span>,               <span class="cm"># 150 trees in the "forest"</span>
+        max_depth=<span class="num">10</span>,                  <span class="cm"># Prevent trees from memorizing</span>
+        random_state=<span class="num">42</span>               <span class="cm"># Reproducibility</span>
+    ))
+])
+    </div>
+    <div class="tags">
+      <span class="tag tag-ml">Random Forest</span>
+      <span class="tag tag-ml">Gradient Boosting</span>
+      <span class="tag tag-ml">Logistic Regression</span>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-title">Evaluate Models</div>
+        <div class="step-subtitle">Accuracy · Precision · Recall · Confusion Matrix</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Like checking exam scores — you grade each model on the test set (data it never trained on) and pick the smartest one.</div>
+    <div class="step-desc">We use <strong>accuracy</strong> (overall correct %), <strong>confusion matrix</strong> (which classes get confused), and <strong>classification report</strong> (precision/recall per class).</div>
+    <div class="code-block">
+y_pred = model.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)     <span class="cm"># e.g., 0.87 = 87%</span>
+cm = confusion_matrix(y_test, y_pred)         <span class="cm"># 3×3 grid of correct/wrong</span>
+<span class="fn">print</span>(classification_report(y_test, y_pred)) <span class="cm"># Precision, Recall, F1</span>
+    </div>
+    <div class="tags">
+      <span class="tag tag-ml">Evaluation</span>
+      <span class="tag tag-viz">Charts</span>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">7</div>
+      <div>
+        <div class="step-title">Feature Importance</div>
+        <div class="step-subtitle">Which risk factors matter most?</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Like a doctor identifying which vital signs (BP, temperature, heart rate) are most critical for diagnosing a condition.</div>
+    <div class="step-desc">This tells supply chain managers WHAT to focus on — if "supplier_reliability" is #1, they should invest in supplier audits.</div>
+    <div class="code-block">
+importances = clf.feature_importances_  <span class="cm"># Built-in to tree-based models</span>
+<span class="cm"># Higher = more important for predictions</span>
+<span class="cm"># e.g.: supplier_reliability: 0.22 (most important!)</span>
+    </div>
+    <div class="tags">
+      <span class="tag tag-ml">Interpretability</span>
+      <span class="tag tag-viz">Charts</span>
+    </div>
+  </div>
+
+  <!-- STEP 8: AGENTIC AI -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">8</div>
+      <div>
+        <div class="step-title">Agentic AI — The Risk Monitor Agent</div>
+        <div class="step-subtitle">Autonomous sensing, reasoning, and action</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Think of a security guard who constantly monitors cameras, identifies threats, and automatically triggers alarms + calls the right response team.</div>
+
+    <div class="agent-box">
+      <div style="font-weight:700; margin-bottom:8px; color:var(--accent)">🔄 Sense → Reason → Act Loop</div>
+      <div class="agent-cycle">
+        <div class="cycle-item">
+          <div class="cycle-icon">👁️</div>
+          <div class="cycle-label">SENSE</div>
+          <div class="cycle-desc">Read supply chain metrics (delays, inventory, etc.)</div>
+        </div>
+        <div class="cycle-item">
+          <div class="cycle-icon">🧠</div>
+          <div class="cycle-label">REASON</div>
+          <div class="cycle-desc">ML model predicts risk level with confidence %</div>
+        </div>
+        <div class="cycle-item">
+          <div class="cycle-icon">⚡</div>
+          <div class="cycle-label">ACT</div>
+          <div class="cycle-desc">Generate targeted recommendations & trigger alerts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="kw">class</span> <span class="cls">SupplyChainRiskAgent</span>:
+
+    <span class="kw">def</span> <span class="fn">run</span>(<span class="kw">self</span>, supply_chain_state):
+        X = <span class="kw">self</span>.sense(supply_chain_state)     <span class="cm"># Format the input</span>
+        risk, probs = <span class="kw">self</span>.reason(X)           <span class="cm"># Predict risk</span>
+        decision = <span class="kw">self</span>.act(state, risk, probs) <span class="cm"># Generate actions</span>
+        <span class="kw">return</span> decision                          <span class="cm"># Return full report</span>
+
+<span class="cm"># Example agent output:</span>
+<span class="cm"># Predicted Risk : 🔴 HIGH</span>
+<span class="cm"># Confidence     : High Risk: 78.3%</span>
+<span class="cm"># Action 1       : Activate emergency inventory buffer</span>
+<span class="cm"># Action 2       : Switch to air freight immediately</span>
+    </div>
+    <div class="tags">
+      <span class="tag tag-ai">Agentic AI</span>
+      <span class="tag tag-ai">Autonomous</span>
+      <span class="tag tag-ai">Decision Making</span>
+    </div>
+  </div>
+
+  <!-- STEP 9 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">9</div>
+      <div>
+        <div class="step-title">Save the Trained Model</div>
+        <div class="step-subtitle">Persist the model to disk for reuse</div>
+      </div>
+    </div>
+    <div class="analogy">💡 Like saving a Word document after hours of writing — so you never have to train from scratch again.</div>
+    <div class="code-block">
+<span class="cm"># Save to file</span>
+joblib.dump({<span class="str">'model'</span>: model, <span class="str">'features'</span>: feature_cols},
+            <span class="str">'best_supply_chain_model.pkl'</span>)
+
+<span class="cm"># Load it later (no retraining needed!)</span>
+data = joblib.load(<span class="str">'best_supply_chain_model.pkl'</span>)
+loaded_model = data[<span class="str">'model'</span>]
+    </div>
+    <div class="tags">
+      <span class="tag tag-ml">Model Persistence</span>
+    </div>
+  </div>
+
+  <!-- OUTPUT FILES -->
+  <h2>📁 Output Files Generated</h2>
+  <div class="output-files">
+    <div class="output-file">
+      <div class="fname">eda_analysis.png</div>
+      <div class="fdesc">Risk distribution, correlations, and feature plots from EDA</div>
+    </div>
+    <div class="output-file">
+      <div class="fname">model_evaluation.png</div>
+      <div class="fdesc">Confusion matrices for all 3 trained models side-by-side</div>
+    </div>
+    <div class="output-file">
+      <div class="fname">feature_importance.png</div>
+      <div class="fdesc">Bar chart showing which supply chain factors drive risk most</div>
+    </div>
+    <div class="output-file">
+      <div class="fname">agent_history.png</div>
+      <div class="fdesc">Time-series of agent risk decisions across all scenarios</div>
+    </div>
+    <div class="output-file">
+      <div class="fname">best_supply_chain_model.pkl</div>
+      <div class="fdesc">Saved trained model — can be loaded and reused anytime</div>
+    </div>
+    <div class="output-file">
+      <div class="fname">supply_chain_risk_ai.py</div>
+      <div class="fdesc">The complete Python source code with all comments</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Industrial Management (IM41081) · Supply Chain Risk Resilience Using Agentic AI</p>
+    <p style="margin-top:6px">Python · scikit-learn · Agentic AI · Random Forest · Gradient Boosting</p>
+  </footer>
+
+</div>
+</body>
+</html>

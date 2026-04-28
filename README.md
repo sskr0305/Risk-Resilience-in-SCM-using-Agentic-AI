@@ -1,6 +1,6 @@
 # Supply Chain Risk Resilience Using Agentic AI
 
-This repository contains the notebook **Supply_Chain_Risk_AI.ipynb**, developed as part of the course **Industrial Management (IM41081)**. It implements an AI-powered supply chain risk management system with an agentic AI risk monitor built on top of trained machine learning models.[file:1]
+This repository contains the notebook **Supply_Chain_Risk_AI.ipynb**, developed as part of the course **Industrial Management (IM41081)**. It implements an AI-powered supply chain risk management system with an agentic AI risk monitor built on top of trained machine learning models.
 
 ---
 
